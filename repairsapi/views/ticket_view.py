@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from repairsapi.models import ServiceTicket, Employee
+from repairsapi.models import ServiceTicket, Employee, Customer
 
 
 class TicketView(ViewSet):
@@ -43,10 +43,18 @@ class TicketEmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = ('id', 'user', 'specialty', 'full_name')
 
+class TicketCustomerSerializer(serializers.ModelSerializer):
+    """JSON serializer for full_name on customer"""
+
+    class Meta:
+        model = Customer
+        fields = ('id', 'user', 'address', 'full_name')
+
 class TicketSerializer(serializers.ModelSerializer):
     """JSON serializer for tickets"""
     
     employee = TicketEmployeeSerializer(many=False)
+    customer = TicketCustomerSerializer(many=False)
 
     class Meta:
         model = ServiceTicket
