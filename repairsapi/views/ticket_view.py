@@ -19,6 +19,14 @@ class TicketView(ViewSet):
 
         if request.auth.user.is_staff:
             tickets = ServiceTicket.objects.all()
+
+            if "status" in request.query_params:
+                if request.query_params['status'] == "done":
+                    tickets = tickets.filter(date_completed__isnull=False)
+
+                if request.query_params['status'] == "all":
+                    pass
+
         else:
             tickets = ServiceTicket.objects.filter(customer__user=request.auth.user)
 
