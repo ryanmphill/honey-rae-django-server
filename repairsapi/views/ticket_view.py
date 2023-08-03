@@ -35,6 +35,22 @@ class TicketView(ViewSet):
         ticket = ServiceTicket.objects.get(pk=pk)
         serialized = TicketSerializer(ticket, context={'request': request})
         return Response(serialized.data, status=status.HTTP_200_OK)
+    
+    def create(self, request):
+            """Handle POST requests for service tickets
+
+            Returns:
+                Response: JSON serialized representation of newly created service ticket
+            """
+            new_ticket = ServiceTicket()
+            new_ticket.customer = Customer.objects.get(user=request.auth.user)
+            new_ticket.description = request.data['description']
+            new_ticket.emergency = request.data['emergency']
+            new_ticket.save()
+
+            serialized = TicketSerializer(new_ticket, many=False)
+
+            return Response(serialized.data, status=status.HTTP_201_CREATED)
 
 class TicketEmployeeSerializer(serializers.ModelSerializer):
     """JSON serializer for full_name on employee"""
