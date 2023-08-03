@@ -8,7 +8,7 @@ from repairsapi.views import register_user, login_user
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', CustomerView, 'customer')
 router.register(r'employees', EmployeeView, 'employee')
-router.register(r'serviceTickets', TicketView, 'serviceTicket')
+router.register(r'tickets', TicketView, 'ticket')
 
 # The trailing_slash=False tells the router to accept /customers instead of /customers/.
 # It’s a very annoying error to come across, when your server is not responding and the code looks right, 
